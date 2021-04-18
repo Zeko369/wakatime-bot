@@ -1,0 +1,11 @@
+{
+  "name": "wakatime-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Fran Zekan",
+  "license": "MIT",
+  "dependencies": {
+    "got": "^11.8.2",
+    "lodash": "^4.17.21"
+  }
+}
