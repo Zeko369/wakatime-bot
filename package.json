@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "Fran Zekan",
   "license": "MIT",
+  "scripts": {
+    "start": "node index.js | pbcopy"
+  },
   "dependencies": {
     "got": "^11.8.2",
     "lodash": "^4.17.21"
