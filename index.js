@@ -32,12 +32,17 @@ const spaces = (num) => {
   const COLUMN_COUNT = rows[0].length;
 
   for (const row of data.data) {
-    const res = await got(
-      `https://wakatime.com/api/v1/users/${row.user.id}/stats/last_7_days`,
-      { headers: { Authorization: `Basic ${apiKey}` } }
-    );
+    let data;
+    try {
+      const res = await got(
+        `https://wakatime.com/api/v1/users/${row.user.id}/stats/last_7_days`,
+        { headers: { Authorization: `Basic ${apiKey}` } }
+      );
 
-    const data = JSON.parse(res.body);
+      data = JSON.parse(res.body);
+    } catch (err) {
+      data = { data: { editors: undefined } };
+    }
 
     rows.push([
       row.rank.toString(),
