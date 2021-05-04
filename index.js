@@ -13,7 +13,7 @@ const formatTime = (t) => {
 };
 
 (async () => {
-  const file = await readFile("/Users/franzekan/.wakatime.cfg", "utf-8");
+  const file = await readFile(`${process.env.HOME}/.wakatime.cfg`, "utf-8");
   const rawApiKey = file.split("\n")[1].slice(8);
   const apiKey = Buffer.from(rawApiKey).toString("base64");
 
@@ -32,10 +32,9 @@ const formatTime = (t) => {
   for (const row of data.data) {
     let data;
     try {
-      const res = await got(
-        `https://wakatime.com/api/v1/users/${row.user.id}/stats/last_7_days`,
-        { headers: { Authorization: `Basic ${apiKey}` } }
-      );
+      const res = await got(`https://wakatime.com/api/v1/users/${row.user.id}/stats/last_7_days`, {
+        headers: { Authorization: `Basic ${apiKey}` },
+      });
 
       data = JSON.parse(res.body);
     } catch (err) {
