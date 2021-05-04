@@ -6,6 +6,12 @@ const spaces = (num) => {
   return Array.from(new Array(num), () => " ").join("");
 };
 
+const fill = (n) => (n < 10 ? `0${n}` : n);
+const formatTime = (t) => {
+  t /= 60;
+  return `${fill(Math.floor(t / 60))}:${fill(Math.floor(t % 60))}`;
+};
+
 (async () => {
   const file = await readFile("/Users/franzekan/.wakatime.cfg", "utf-8");
   const rawApiKey = file.split("\n")[1].slice(8);
@@ -19,16 +25,8 @@ const spaces = (num) => {
   const data = JSON.parse(res.body);
   const range = data.range.text;
 
-  const rows = [
-    [
-      "Rank",
-      "Name",
-      "Total",
-      "Daily average",
-      "Languages",
-      "Most used editors",
-    ],
-  ];
+  const rows = [];
+  rows.push(["ID", "Name", "Total", "Daily", "Languages", "Most used editors"]);
   const COLUMN_COUNT = rows[0].length;
 
   for (const row of data.data) {
@@ -47,8 +45,8 @@ const spaces = (num) => {
     rows.push([
       row.rank.toString(),
       row.user.display_name,
-      row.running_total.human_readable_total,
-      row.running_total.human_readable_daily_average,
+      formatTime(row.running_total.total_seconds),
+      formatTime(row.running_total.daily_average),
       row.running_total.languages
         .slice(0, 3)
         .map((l) => l.name)
